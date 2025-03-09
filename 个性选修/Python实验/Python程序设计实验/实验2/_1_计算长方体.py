@@ -1,0 +1,7 @@
+length = int(input("请输入长方体长:"))
+width = int(input("请输入长方体宽:"))
+height = int(input("请输入长方体高:"))
+print("俯视图面积:", length * width)
+print("左视图面积:", height * width)
+print("正视图面积:", length * height)
+print("体积:", length * height * width)

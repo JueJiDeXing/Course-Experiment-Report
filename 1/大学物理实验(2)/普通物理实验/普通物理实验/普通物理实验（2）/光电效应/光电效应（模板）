@@ -1,0 +1,155 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>实验报告自动评阅系统</title>
+    <style type="text/css">
+        html, body
+        {
+            height: 100%;
+            overflow: auto;
+        }
+        body
+        {
+            padding: 0;
+            margin: 0;
+        }
+        #silverlightControlHost
+        {
+            height: 100%;
+            text-align: center;
+        }
+    </style>
+    <script type="text/javascript" src="Silverlight.js"></script>
+    <script type="text/javascript">
+        function onSilverlightError(sender, args) {
+            var appSource = "";
+            if (sender != null && sender != 0) {
+                appSource = sender.getHost().Source;
+            }
+
+            var errorType = args.ErrorType;
+            var iErrorCode = args.ErrorCode;
+
+            if (errorType == "ImageError" || errorType == "MediaError") {
+                return;
+            }
+
+            var errMsg = "Unhandled Error in Silverlight Application " + appSource + "\n";
+
+            errMsg += "Code: " + iErrorCode + "    \n";
+            errMsg += "Category: " + errorType + "       \n";
+            errMsg += "Message: " + args.ErrorMessage + "     \n";
+
+            if (iErrorCode == 8001) {
+                window.location.href = 'DownloadSilverlight.html';
+                return;
+            }
+            if (errorType == "ParserError") {
+                errMsg += "File: " + args.xamlFile + "     \n";
+                errMsg += "Line: " + args.lineNumber + "     \n";
+                errMsg += "Position: " + args.charPosition + "     \n";
+            }
+            else if (errorType == "RuntimeError") {
+                if (args.lineNumber != 0) {
+                    errMsg += "Line: " + args.lineNumber + "     \n";
+                    errMsg += "Position: " + args.charPosition + "     \n";
+                }
+                errMsg += "MethodName: " + args.methodName + "     \n";
+            }
+
+            throw new Error(errMsg);
+        }
+    </script>
+    <script type="text/javascript">
+        function $G() {
+            var Url = top.window.location.href;
+            var u, g, StrBack = '';
+            if (arguments[arguments.length - 1] == "#")
+                u = Url.split("#");
+            else
+                u = Url.split("?");
+            if (u.length == 1) g = '';
+            else g = u[1];
+
+            if (g != '') {
+                gg = g.split("&");
+                var MaxI = gg.length;
+                str = arguments[0] + "=";
+                for (i = 0; i < MaxI; i++) {
+                    if (gg[i].indexOf(str) == 0) {
+                        StrBack = gg[i].replace(str, "");
+                        break;
+                    }
+                }
+            }
+            return StrBack;
+        } 
+    </script>
+    <script type="text/javascript">
+        function getUrl() {
+            var paraminitParams = document.getElementsByName("initParams")
+            var userID = $G("userID");
+            var password = $G("password", "#");
+            paraminitParams.value = "userID = '" + userID + "', password = '" + password + "'";
+        }
+    </script>
+    <script type="text/javascript">
+        function CheckSilverlightInstalled() {
+            var isSilverlightInstalled = false;
+            try {
+                try {
+                    var slControl = new ActiveXObject('AgControl.AgControl'); //检查IE   
+                    isSilverlightInstalled = true;
+                }
+                catch (e) {
+                    if (navigator.plugins["Silverlight Plug-In"]) //检查非IE   
+                    {
+                        isSilverlightInstalled = true;
+                    }
+                }
+            }
+            catch (e) { }
+            finally {
+                if (!isSilverlightInstalled) {
+                    window.location.href = 'DownloadSilverlight.html';
+                }
+//                                else {
+//                                    //检查sliverlight版本5.1.30514.0
+//                                    var SLVersion = "4.0.50826.0";
+//                                    var SLVersionNext = "4.0.50826.1";
+//                                    try {
+//                                        var control = new ActiveXObject('AgControl.AgControl');
+//                                        if (control.IsVersionSupported(SLVersion) == false || control.IsVersionSupported(SLVersionNext) == true){
+//                                            window.location.href = 'DownloadSupportSilverlight.htm';
+//                                        }
+//                                        control = null;
+//                                    }
+//                                    catch (e) {
+//                                        
+
+//                                    }
+//                                }
+            }
+        }
+        CheckSilverlightInstalled();
+    </script>
+</head>
+<body>
+    <form id="form1" runat="server" style="height: 100%" onload="getUrl();">
+    <div id="silverlightControlHost">
+        <object data="data:application/x-silverlight-2," type="application/x-silverlight-2"
+            width="100%" height="100%">
+            <param name="source" value="ClientBin/USTCORi.LabReportSystem.WebUI.xap" />
+            <param name="onError" value="onSilverlightError" />
+            <param name="background" value="white" />
+            <param name="minRuntimeVersion" value="4.0.41108.0" />
+            <param name="autoUpgrade" value="false" />
+            <param name="initParams" value="" />
+        </object>
+        <iframe id="_sl_historyFrame" style="visibility: hidden; height: 0px; width: 0px;
+            border: 0px"></iframe>
+
+    </div>
+    </form>
+</body>
+</html>

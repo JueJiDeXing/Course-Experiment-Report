@@ -1,0 +1,10 @@
+the: 10
+fox: 5
+dog: 5
+to: 4
+quick: 2
+but: 2
+is: 2
+too: 2
+and: 2
+brown: 1

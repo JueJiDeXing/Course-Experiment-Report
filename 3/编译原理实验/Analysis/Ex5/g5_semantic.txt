@@ -1,0 +1,6 @@
+E0->E1+T,E0.code=E1.code||T.code||+,E0.val=E1.val+T.val
+E->T,E.code=T.code,E.val=T.val
+T0->T1*F,T0.code=T1.code||F.code||*,T0.val=T1.val*F.val
+T->F,T.code=F.code,T.val=F.val
+F->i,F.code=i.val,F.val=i.val
+F->(E),F.code=E.code,F.val=E.val
