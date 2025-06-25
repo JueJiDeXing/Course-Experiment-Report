@@ -1,0 +1,8 @@
+cd xxx
+
+git init
+git remote add origin https://github.com/juejidexing/xxx.git
+ 
+git add .
+git commit -m "?"
+git push origin master

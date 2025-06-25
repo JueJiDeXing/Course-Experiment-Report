@@ -1,0 +1,10 @@
+可用设备列表(Cisco Packet Tracer5.2):
+(1)Routers: 1841、2620XM、2621XM、2811、Router-PT、Router-PT-Empty
+(2)Switches: 2950-24、2950T、2960、Switch-PT、Switch-PT-Empty、3560-24PS、Bridge-PT
+(3)Hubs:Hub-PT、Repeater-PT
+(4)Wireless Devices:AccessPoint-PT、AccessPoint-PT-A、AccessPoint-PT-N、Linksys-WRT300N
+(5)Connections:配置线、直通线、交叉线、光纤、电话线、同轴电缆、串行DCE、串行DTE
+(6)End Devices:PC-PT、Laptop-PT、Server-PT、Printer-PT、7960
+(7)WAN Emulation:Cloud-PT、Cloud-PT-Empty、DSL-Modem-PT、Cable-Modem-PT
+(8)Custom Made Devices:1841 WIC-2T、2621XM NM-2FE2W(2)WIC-2T、2811 NM-ESW-161(2)WUC-2T、Wireless PC
+(9)多用户连接:Romote Network

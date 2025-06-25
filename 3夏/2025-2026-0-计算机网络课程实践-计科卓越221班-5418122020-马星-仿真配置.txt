@@ -1,0 +1,292 @@
+--核心交换机配置
+en
+conf t
+hostname CoreSwitch
+vlan 10
+name Finance
+exit
+vlan 20
+name Tech
+exit
+vlan 99
+name Servers
+exit
+inter vlan 10
+ip address 192.168.10.1 255.255.255.0
+exit
+inter vlan 20
+ip address 192.168.20.1 255.255.255.0
+exit
+inter vlan 99
+ip address 192.168.99.1 255.255.255.0
+exit
+ip routing
+inter fast 0/1
+switch mode trunk
+switch trunk allowed vlan 99
+exit
+inter fast 0/2
+switch mode trunk
+switch trunk allowed vlan 99
+exit
+inter fast 0/3
+switch mode trunk
+switch trunk allowed vlan 10,20
+exit
+inter fast 0/4
+switch mode trunk
+switch trunk allowed vlan 10,20
+exit
+ip access-list extended FINANCE-ACL
+permit ip 192.168.10.0 0.0.0.255 192.168.10.0 0.0.0.255
+permit ip 192.168.20.0 0.0.0.255 192.168.20.0 0.0.0.255
+permit ip 192.168.0.0 0.0.255.255 host 192.168.99.20
+permit ip 192.168.10.0 0.0.0.255 host 192.168.99.10
+exit
+inter vlan 10
+ip access-group FINANCE-ACL in
+exit
+inter vlan 20
+ip access-group FINANCE-ACL in
+exit
+exit
+ 
+
+
+
+
+--服务器汇聚交换机1配置
+en
+conf t
+hostname ServerAggSwitch1
+vlan 99
+name Servers
+exit
+inter fast 0/1
+switch mode trunk
+switch trunk allowed vlan 99
+exit
+inter fast 0/3
+switch mode trunk
+switch trunk allowed vlan 99
+exit
+inter fast 0/2
+switch mode trunk
+switch trunk allowed vlan 99
+exit
+inter fast 0/4
+switch mode trunk
+switch trunk allowed vlan 99
+exit
+end
+write memory
+
+
+
+
+--服务器汇聚交换机2配置
+en
+conf t
+hostname ServerAggSwitch2
+vlan 99
+name Servers
+exit
+inter fast 0/1
+switch mode trunk
+switch trunk allowed vlan 99
+exit
+inter fast 0/3
+switch mode trunk
+switch trunk allowed vlan 99
+exit
+inter fast 0/2
+switch mode trunk
+switch trunk allowed vlan 99
+exit
+inter fast 0/4
+switch mode trunk
+switch trunk allowed vlan 99
+exit
+end
+write memory
+ 
+
+
+
+
+--服务器接入交换机1配置
+en
+conf t
+hostname ServerAccSwitch1
+vlan 99
+name Servers
+exit
+inter fast 0/1
+switch mode trunk
+switch trunk allowed vlan 99
+exit
+inter fast 0/2
+switch mode trunk
+switch trunk allowed vlan 99
+exit
+inter fast 0/3
+switch mode access
+switch access vlan 99
+switch port-security
+switch port-security maximum 1
+switch port-security violation shutdown
+exit
+end
+write memory
+
+
+
+
+ 
+--服务器接入交换机2配置
+en
+conf t
+hostname ServerAccSwitch2
+vlan 99
+name Servers
+exit
+inter fast 0/1
+switch mode trunk
+switch trunk allowed vlan 99
+exit
+inter fast 0/2
+switch mode trunk
+switch trunk allowed vlan 99
+exit
+inter fast 0/3
+switch mode access
+switch access vlan 99
+switch port-security
+switch port-security maximum 1
+switch port-security violation shutdown
+exit
+end
+write memory
+
+
+
+ 
+--部门汇聚交换机1配置
+en
+conf t
+hostname DeptAggSwitch1
+vlan 10
+name Finance
+exit
+vlan 20
+name Tech
+exit
+inter fast 0/1
+switch mode trunk
+switch trunk allowed vlan 10,20
+exit
+inter fast 0/3
+switch mode trunk
+switch trunk allowed vlan 10,20
+exit
+inter fast 0/2
+switch mode trunk
+switch trunk allowed vlan 10,20
+exit
+inter fast 0/4
+switch mode trunk
+switch trunk allowed vlan 10,20
+exit
+end
+write memory
+
+
+
+
+
+--部门汇聚交换机2配置
+en
+conf t
+hostname DeptAggSwitch2
+vlan 10
+name Finance
+exit
+vlan 20
+name Tech
+exit
+inter fast 0/1
+switch mode trunk
+switch trunk allowed vlan 10,20
+exit
+inter fast 0/3
+switch mode trunk
+switch trunk allowed vlan 10,20
+exit
+inter fast 0/2
+switch mode trunk
+switch trunk allowed vlan 10,20
+exit
+inter fast 0/4
+switch mode trunk
+switch trunk allowed vlan 10,20
+exit
+end
+write memory
+
+
+
+
+
+
+--部门接入交换机1配置（财务部）
+en
+conf t
+hostname DeptAccSwitch1
+vlan 10
+name Finance
+exit
+inter fast 0/1
+switch mode trunk
+switch trunk allowed vlan 10
+exit
+inter fast 0/2
+switch mode trunk
+switch trunk allowed vlan 10
+exit
+inter range fast 0/3-24
+switch mode access
+switch access vlan 10
+switch port-security
+switch port-security maximum 1
+switch port-security violation shutdown
+exit
+end
+write memory
+
+
+
+--部门接入交换机2配置（技术部）
+en
+conf t
+hostname DeptAccSwitch2
+vlan 20
+name Tech
+exit
+inter fast 0/1
+switch mode trunk
+switch trunk allowed vlan 20
+exit
+inter fast 0/2
+switch mode trunk
+switch trunk allowed vlan 20
+exit
+inter range fast 0/3-24
+switch mode access
+switch access vlan 20
+switch port-security
+switch port-security maximum 1
+switch port-security violation shutdown
+exit
+end
+write memory
+
